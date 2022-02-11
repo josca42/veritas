@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "veritas"
+version = "0.1.0"
+description = ""
+authors = ["Josca <jonathanscharff@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pandas = "^1.4.0"
+numpy = "^1.22.2"
+arweave-python-client = "^1.0.18"
+httpx = "^0.22.0"
+sgqlc = "^15.0"
+gql = {extras = ["all"], version = "^3.0.0"}
+lz4 = "^3.1.10"
+tqdm = "^4.62.3"
+
+[tool.poetry.dev-dependencies]
+jupyterlab = "^3.2.9"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,14 @@
+query ($first: Int!, $after: String!) {
+  transactions(
+    first: $first
+    after: $after
+    tags: { name: "App-Name", values: ["MirrorXYZ"] }
+  ) {
+    edges {
+      cursor
+      node {
+        id
+      }
+    }
+  }
+}
