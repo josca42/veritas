@@ -2,9 +2,9 @@ import arweave
 from arweave.arweave_lib import Transaction
 import json
 from pathlib import Path
-from .utils import retry, latest_file_in_folder
+from veritas.crawlers.utils import retry, latest_file_in_folder
 from veritas import io
-from .base import BaseCrawler
+from veritas.crawlers.base import BaseCrawler
 
 
 class MirrorCrawler(BaseCrawler):
@@ -24,7 +24,7 @@ class MirrorCrawler(BaseCrawler):
         )
 
         self.wallet = arweave.Wallet(wallet_fp)
-        self.storage_dir = Path("data/mirror")
+        self.storage_dir = Path("/home/ledger_of_record/data/mirror")
 
     def list_of_articles(self, after, first=100):
         vars = {"first": first, "after": after}
@@ -53,11 +53,11 @@ class MirrorCrawler(BaseCrawler):
             article = articles[-1]
             return article["cursor"]
         else:
-            cursor
+            return cursor
 
     def crawl(self, skip_article=False):
         cursor = self.crawl_from_next_article(skip_article)
-
+        cursor = "WyIyMDIyLTAyLTEyVDExOjM4OjA4LjgwMFoiLDFd"
         t = 0
         while True:
             try:
@@ -74,5 +74,8 @@ class MirrorCrawler(BaseCrawler):
                 self.crawl(skip_article=True)
 
             cursor = article["cursor"]
-
             print(f"Articles processed: {t}")
+
+
+if __name__ == "__main__":
+    MirrorCrawler(wallet_fp="/home/ledger_of_record/wallets/arweave.json").crawl()

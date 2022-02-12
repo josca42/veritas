@@ -1,7 +1,7 @@
-from .base import BaseCrawler
+from veritas.crawlers.base import BaseCrawler
 from pathlib import Path
 import networkx as nx
-from .utils import retry
+from veritas.crawlers.utils import retry
 from veritas import io
 from datetime import datetime
 
@@ -21,36 +21,36 @@ class CyberConnectCrawler(BaseCrawler):
             graphql_fp=Path(__file__).parent / "graphql_queries/cyberconnect.graphql",
         )
 
-        self.G = nx.read_gpickle(graph_fp) if graph_fp else nx.DiGraph
-        self.articles_dir = Path("data/mirror")
+        self.G = nx.read_gpickle(graph_fp) if graph_fp else nx.DiGraph()
+        self.articles_dir = Path("/home/ledger_of_record/data/mirror")
 
     def expand_graph(self, address):
         if address:
             connections = self.get_connections_for_address(address=address)
-            self.add_connections(connections, node=connections["address"])
+            self.add_connections(connections)
 
-        while True:
-            for i, connections in enumerate(self.traverse_graph()):
-                self.add_connections(connections, node=connections["address"])
+        for i, connections in enumerate(self.traverse_graph()):
+            self.add_connections(connections)
 
-                if i % 1000 == 0:
-                    print(i)
-
-                    timestamp = datetime.now().strftime("%d/%m %H:%M:%S")
-                    nx.write_gpickle(
-                        self.G,
-                        f"/home/ledger_of_record/data/cyberconnect/social_graph_{timestamp}.gpickle",
-                    )
+            if i % 500 == 0:
+                print(i)
+                nx.write_gpickle(
+                    self.G,
+                    f"/home/ledger_of_record/data/cyberconnect/social_graph.gpickle",
+                )
 
     def traverse_graph(self):
-        for node, metadata in self.G.nodes(data=True):
+        nodes = list(self.G.nodes(data=True))
+        for node, metadata in nodes:
             if "q" in metadata:
                 pass
             else:
                 connections = self.get_connections_for_address(address=node)
                 yield connections
 
-    def add_connections(self, connections, node):
+    def add_connections(self, connections):
+        node = connections["address"]
+        self.G.add_node(node)
         for following in connections["followings"]["list"]:
             self.G.add_edge(node, following["address"])
 
@@ -61,17 +61,20 @@ class CyberConnectCrawler(BaseCrawler):
 
     @retry
     def get_connections_for_address(self, address):
-        response = self.client.execute(self.query, address=address)
-        connections = response["data"]["identity"]
-        return connections
+        response = self.client.execute(self.query, variable_values={"address": address})
+        return response["identity"]
 
     def crawl(self):
 
         while True:
             for fp in self.articles_dir.iterdir():
                 article = io.json_reader(fp)
-                address = article["authorship"]
+                address = article["authorship"]["contributor"]
                 if address not in self.G.nodes:
                     self.expand_graph(address=address)
 
             self.expand_graph()
+
+
+if __name__ == "__main__":
+    CyberConnectCrawler().crawl()
