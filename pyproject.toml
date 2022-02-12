@@ -14,6 +14,8 @@ sgqlc = "^15.0"
 gql = {extras = ["all"], version = "^3.0.0"}
 lz4 = "^3.1.10"
 tqdm = "^4.62.3"
+networkx = "^2.6.3"
+matplotlib = "^3.5.1"
 
 [tool.poetry.dev-dependencies]
 jupyterlab = "^3.2.9"
