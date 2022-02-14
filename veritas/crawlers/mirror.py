@@ -26,7 +26,7 @@ class MirrorCrawler(BaseCrawler):
         self.wallet = arweave.Wallet(wallet_fp)
         self.storage_dir = Path("/home/ledger_of_record/data/mirror")
 
-    def list_of_articles(self, after, first=500):
+    def list_of_articles(self, after, first=100):
         vars = {"first": first, "after": after}
         articles = self.get_articles(vars=vars)
         for article in articles["transactions"]["edges"]:
@@ -62,13 +62,13 @@ class MirrorCrawler(BaseCrawler):
             try:
                 articles = list(self.storage_dir.iterdir())
                 for article in self.list_of_articles(after=cursor):
-                    fn = f"{article['id']}.{article['cursor']}.json.lz4"
-                    if fn not in articles:
+                    fp = (
+                        self.storage_dir
+                        / f"{article['id']}.{article['cursor']}.json.lz4"
+                    )
+                    if fp not in articles:
                         article_data = self.article_data(id=article["id"])
-                        io.json_writer(
-                            self.storage_dir / fn,
-                            article_data,
-                        )
+                        io.json_writer(fp, article_data)
                         t += 1
                     else:
                         continue
