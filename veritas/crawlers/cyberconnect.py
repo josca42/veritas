@@ -1,10 +1,11 @@
 from veritas.crawlers.base import BaseCrawler
 from pathlib import Path
 import networkx as nx
-from veritas.crawlers.utils import retry
+from veritas.crawlers.utils import error_handling
 from veritas import io
 from datetime import datetime
 from time import sleep
+from gql.transport.exceptions import TransportQueryError
 
 
 class CyberConnectCrawler(BaseCrawler):
@@ -28,10 +29,10 @@ class CyberConnectCrawler(BaseCrawler):
     def expand_graph(self, address):
         if address:
             connections = self.get_connections_for_address(address=address)
-            self.add_connections(connections)
+            self.add_connections(node=address, connections=connections)
 
-        for i, connections in enumerate(self.traverse_graph()):
-            self.add_connections(connections)
+        for i, (node, connections) in enumerate(self.traverse_graph()):
+            self.add_connections(node, connections)
 
             if i % 500 == 0:
                 print(i)
@@ -47,31 +48,30 @@ class CyberConnectCrawler(BaseCrawler):
                 pass
             else:
                 connections = self.get_connections_for_address(address=node)
-                yield connections
+                yield node, connections
 
-    def add_connections(self, connections):
-        node = connections["address"]
+    def add_connections(self, node, connections):
         self.G.add_node(node)
-        for following in connections["followings"]["list"]:
-            self.G.add_edge(node, following["address"])
-
-        for follower in connections["followers"]["list"]:
-            self.G.add_edge(follower["address"], node)
-
         self.G.nodes[node]["q"] = True
 
-    @retry
+        if connections == TransportQueryError:
+            self.G.nodes[node]["api_error"] = True
+        else:
+            for following in connections["followings"]["list"]:
+                self.G.add_edge(node, following["address"])
+
+            for follower in connections["followers"]["list"]:
+                self.G.add_edge(follower["address"], node)
+
+    @error_handling
     def get_connections_for_address(self, address):
         response = self.client.execute(self.query, variable_values={"address": address})
         return response["identity"]
 
     def crawl(self):
 
-        # last_error_timestamp = datetime.now()
-        # t = 0
-
         while True:
-            # try:
+
             for fp in self.articles_dir.iterdir():
                 article = io.json_reader(fp)
                 address = article["authorship"]["contributor"]
@@ -79,20 +79,6 @@ class CyberConnectCrawler(BaseCrawler):
                     self.expand_graph(address=address)
 
             self.expand_graph()
-
-            # except Exception as e:
-            #     print(e)
-            #     self.logger.info(e)
-            #     sleep(10)
-
-            #     # Try again 3 times. If error not resolved break out of loop
-            #     error_timestamp = datetime.now()
-            #     if (error_timestamp - last_error_timestamp) < 60 * 10:
-            #         t += 1
-            #         if t == 3:
-            #             break
-            #     elsed:
-            #         t = 0
 
 
 if __name__ == "__main__":
@@ -102,9 +88,13 @@ if __name__ == "__main__":
     # from veritas import io
     # from pathlib import Path
 
+    # addr = "0x4fF704F2c0B6330E0e55D029b787ce6F4"
+
     # crawler = CyberConnectCrawler(
     #     graph_fp="/home/ledger_of_record/data/cyberconnect/social_graph_2.gpickle"
     # )
+
+    # a = 2
 
     # mirror_article_dir = Path("/home/ledger_of_record/data/mirror")
     # for fp in mirror_article_dir.iterdir():

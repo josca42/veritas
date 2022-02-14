@@ -2,7 +2,7 @@ import arweave
 from arweave.arweave_lib import Transaction
 import json
 from pathlib import Path
-from veritas.crawlers.utils import retry, latest_file_in_folder
+from veritas.crawlers.utils import error_handling, latest_file_in_folder
 from veritas import io
 from veritas.crawlers.base import BaseCrawler
 
@@ -34,13 +34,13 @@ class MirrorCrawler(BaseCrawler):
             cursor = article["cursor"]
             yield {"id": Id, "cursor": cursor}
 
-    @retry
+    @error_handling
     def article_data(self, id):
         tx = Transaction(self.wallet, id=id)
         tx.get_data()
         return json.loads(tx.data)
 
-    @retry
+    @error_handling
     def get_articles(self, vars):
         return self.client.execute(self.query, variable_values=vars)
 
