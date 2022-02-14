@@ -16,7 +16,7 @@ def retry(func):
     def retry_func(*args, **kwargs):
         try:
             return func(*args, **kwargs)
-        except:
+        except Exception as e:
             print(e)
             logger.info(e)
 
