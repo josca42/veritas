@@ -14,14 +14,20 @@ def retry(func):
 
     @functools.wraps(func)
     def retry_func(*args, **kwargs):
-        for attempt in range(2, 4):
-            sleep_seconds = attempt**2
-            sleep(sleep_seconds)
+        try:
+            return func(*args, **kwargs)
+        except:
+            print(e)
+            logger.info(e)
 
-            try:
-                return func(*args, **kwargs)
-            except Exception as e:
-                print(e)
-                logger.info(e)
+            for attempt in range(2, 4):
+                sleep_seconds = attempt**2
+                sleep(sleep_seconds)
+
+                try:
+                    return func(*args, **kwargs)
+                except Exception as e:
+                    print(e)
+                    logger.info(e)
 
     return retry_func
