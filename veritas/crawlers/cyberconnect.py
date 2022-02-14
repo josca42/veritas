@@ -67,32 +67,32 @@ class CyberConnectCrawler(BaseCrawler):
 
     def crawl(self):
 
-        last_error_timestamp = datetime.now()
-        t = 0
+        # last_error_timestamp = datetime.now()
+        # t = 0
 
         while True:
-            try:
-                for fp in self.articles_dir.iterdir():
-                    article = io.json_reader(fp)
-                    address = article["authorship"]["contributor"]
-                    if address not in self.G.nodes:
-                        self.expand_graph(address=address)
+            # try:
+            for fp in self.articles_dir.iterdir():
+                article = io.json_reader(fp)
+                address = article["authorship"]["contributor"]
+                if address not in self.G.nodes:
+                    self.expand_graph(address=address)
 
-                self.expand_graph()
+            self.expand_graph()
 
-            except Exception as e:
-                print(e)
-                self.logger.info(e)
-                sleep(10)
+            # except Exception as e:
+            #     print(e)
+            #     self.logger.info(e)
+            #     sleep(10)
 
-                # Try again 3 times. If error not resolved break out of loop
-                error_timestamp = datetime.now()
-                if (error_timestamp - last_error_timestamp) < 60 * 10:
-                    t += 1
-                    if t == 3:
-                        break
-                else:
-                    t = 0
+            #     # Try again 3 times. If error not resolved break out of loop
+            #     error_timestamp = datetime.now()
+            #     if (error_timestamp - last_error_timestamp) < 60 * 10:
+            #         t += 1
+            #         if t == 3:
+            #             break
+            #     elsed:
+            #         t = 0
 
 
 if __name__ == "__main__":
