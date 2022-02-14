@@ -8,7 +8,7 @@ from pathlib import Path
 
 class BaseCrawler(metaclass=ABCMeta):
     def __init__(self, headers, url, log_fp, graphql_fp):
-        logging.basicConfig(
+        self.logger = logging.basicConfig(
             filename=log_fp,
             format="%(asctime)s - %(message)s",
         )

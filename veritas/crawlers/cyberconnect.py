@@ -4,6 +4,7 @@ import networkx as nx
 from veritas.crawlers.utils import retry
 from veritas import io
 from datetime import datetime
+from time import sleep
 
 
 class CyberConnectCrawler(BaseCrawler):
@@ -36,7 +37,7 @@ class CyberConnectCrawler(BaseCrawler):
                 print(i)
                 nx.write_gpickle(
                     self.G,
-                    f"/home/ledger_of_record/data/cyberconnect/social_graph.gpickle",
+                    f"/home/ledger_of_record/data/cyberconnect/social_graph_2.gpickle",
                 )
 
     def traverse_graph(self):
@@ -66,15 +67,49 @@ class CyberConnectCrawler(BaseCrawler):
 
     def crawl(self):
 
-        while True:
-            for fp in self.articles_dir.iterdir():
-                article = io.json_reader(fp)
-                address = article["authorship"]["contributor"]
-                if address not in self.G.nodes:
-                    self.expand_graph(address=address)
+        last_error_timestamp = datetime.now()
+        t = 0
 
-            self.expand_graph()
+        while True:
+            try:
+                for fp in self.articles_dir.iterdir():
+                    article = io.json_reader(fp)
+                    address = article["authorship"]["contributor"]
+                    if address not in self.G.nodes:
+                        self.expand_graph(address=address)
+
+                self.expand_graph()
+
+            except Exception as e:
+                print(e)
+                self.logger.info(e)
+                sleep(10)
+
+                # Try again 3 times. If error not resolved break out of loop
+                error_timestamp = datetime.now()
+                if (error_timestamp - last_error_timestamp) < 60 * 10:
+                    t += 1
+                    if t == 3:
+                        break
+                else:
+                    t = 0
 
 
 if __name__ == "__main__":
-    CyberConnectCrawler().crawl()
+    CyberConnectCrawler(
+        graph_fp="/home/ledger_of_record/data/cyberconnect/social_graph_2.gpickle"
+    ).crawl()
+    # from veritas import io
+    # from pathlib import Path
+
+    # crawler = CyberConnectCrawler(
+    #     graph_fp="/home/ledger_of_record/data/cyberconnect/social_graph_2.gpickle"
+    # )
+
+    # mirror_article_dir = Path("/home/ledger_of_record/data/mirror")
+    # for fp in mirror_article_dir.iterdir():
+    #     article = io.json_reader(fp)
+    #     address = article["authorship"]["contributor"]
+    #     break
+
+    # a = 2
