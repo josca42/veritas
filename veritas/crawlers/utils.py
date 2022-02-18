@@ -15,6 +15,13 @@ def error_handling(func):
 
     @functools.wraps(func)
     def retry_func(*args, **kwargs):
+        """
+        Decorator that in case of a TransportQueryError returns
+        the error. For all other errors the decorator retries the
+        same call 2 times with a growing sleep interval in between.
+
+        All errors get printed and logged
+        """
         try:
             return func(*args, **kwargs)
         except Exception as e:
