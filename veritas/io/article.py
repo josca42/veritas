@@ -9,7 +9,7 @@ metadata_types = ["ner", "pos", "summary", "embedding", "cursor"]
 
 
 def load_metadata(source: str, article_id: str, metadata_type: str):
-    fp = articles_dir / source / article_id / f"{metadata_type}.p"
+    fp = articles_dir / source / article_id / f"{metadata_type}.pickle"
     if fp.is_file():
         with fp.open("rb") as f:
             obj = pickle.load(f)
@@ -24,7 +24,7 @@ def save_metadata(obj, source: str, article_id: str, metadata_type: str):
         "Update known metadata types if introducing a new metadata type."
     )
 
-    fp = articles_dir / source / article_id / f"{metadata_type}.p"
+    fp = articles_dir / source / article_id / f"{metadata_type}.pickle"
     with fp.open("wb") as f:
         pickle.dump(obj, f)
 
