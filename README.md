@@ -29,11 +29,13 @@ Remember does not need to be perfect just useful and better than current benchma
     - [Expertise](#expertise)
     - [Unconscious bias](#unconscious-bias)
     - [Omission of contect](#omission-of-contect)
-  - [Implemenation](#implemenation)
 - [Code](#code)
   - [Installation](#installation)
-  - [Project](#project-1)
-  - [Tasks](#tasks)
+  - [Structure](#structure)
+    - [Data](#data-1)
+    - [Code](#code-1)
+    - [Examples](#examples)
+- [Tasks](#tasks)
 
 ---
 
@@ -57,27 +59,28 @@ In order to asses the assertions made in an article the full context of the arti
 ![plot](./assets/full_context.png)
 
 
-
 ### Data
-The two main obstacles two implement an algorithmic fact checking framework are:
+The two main obstacles too implementing an algorithmic fact checking framework are:
 
 #### **Access to data**
 
 **Problem**: The data for assessing the full context of an article is mostly present in various databases but access to those databases is mostly restricted (Facebook, Linkedin, Twitter etc. give limited or no access to their databases).
 
-**Trend**: sdfdfdsf
+**Trend**: Web3 alternatives to most corporate databases are currenlty being built and these projects rely on an [open protocol in order to give people incentive to join the network](https://cdixon.org/2018/02/18/why-decentralization-matters). So, if web3 cryptonetworks grow in market share then more and more of the data available in restricted corporate databases will be accesible.
+
+Hence, we can build a fact checking framework around web3 infrastucture and then the framework will grow in precision and applicability as the corresponding web3 infrastructure grows.
 
 #### **Structure of data**
 
-**Problem**: Text data lacks the neat 
+**Problem**: Text data lacks the structure of traditional
 
-**Trend**:
+**Trend**: As most text becomes digital the text increasingly becomes hypertext. Meaning people use @person to directly refer to a person, #topic to directly refer to a topic or event and various other links to refer to sources etc.. This added layer of structure in text documents makes correctly identifying important entities - such as the person quoted - much easier.
+
+Furtermore natural language processing have improved to the extent that most [traditional benchmarks don't make much sense anymore.](https://ruder.io/nlp-benchmarking/)
 
 #### **Starting point**
 
-The opposite is however true for web3 alternatives, where projects rely on an [open protocol in order to give people incentive to join the network](https://cdixon.org/2018/02/18/why-decentralization-matters). Hence, if web3 cryptonetworks grow in market share then we can build a fact checking framework around web3 infrastucture and then the framework will grow in precision and applicability as the corresponding web3 infrastrcutre grows.
-
-As a starting point then [mirror.xyz](https://mirror.xyz/) is as the news feed and [cyberconnect.me](cyberconnect.me) is used for the social network data.
+As a starting point then [mirror.xyz](https://mirror.xyz/) is used as the news feed and [cyberconnect.me](cyberconnect.me) is used for the social network data.
 
 - **Mirror.xyz**: Mirror stores all the articles on Arweave - with tags - making it easy to query the feed. Furthermore every article contains metadata identifying the author by an ethereum address and the article timestamp etc.
 - **Cyberconnect.me**: Cyberconnect aims to build the social graph infrastructure for web3. Currently they have indexed quite a few public data sources - such as bitclout - and the graph can be queried by [api](https://docs.cyberconnect.me/docs/GraphQL/graphql).
@@ -189,11 +192,7 @@ In the example of an american journalist writing about the chinese people this w
 
 **Solution**: Engage users to provide primary evidence. Tag users that are close in space and time, when an event occurs and ask them to comment.
 
-**Implementation**: Use results
-
-
-
-## Implemenation
+**Implementation**: Use results from [information extraction](#information-extraction) to detect articles describing a certain event and extract time and place of event. Find users in social network graph, where metadata indicate that they were/are close to the event in space and time. Send message with request for comment.
 
 # Code
 
@@ -205,19 +204,64 @@ This project uses poetry as a package manager. In order to install dependencies 
 poetry install
 ```
 
-Some NLP packages have a lot of dependencies and installation of these might require a different approach depending on the operating system use. These dependencies are included in requirements.txt. You might try to install these by running.
+Some NLP packages have a lot of dependencies and installation of these might require a different approach depending on the operating system and if a GPU is available. These dependencies are included in requirements.txt. You might try to install these by running.
 
 ```bash
 cat requirements.txt|xargs poetry add
 ```
 
-## Project
+## Structure
 
-## Tasks
+### Data
+
+A zip folder with all the data can be downloaded from the following [link](). Unzipping the folder will give you the folder structure shown below. 
+```
+📦data
+ ┣ 📂articles
+ ┃ ┗ 📂mirror (article platform/publisher)
+ ┃ ┃ ┣ 📂5y4vE8IoICmSFMJQKmVpz0QcUMlTfWSnrIXyXIBZew4 (article id)
+ ┃ ┃ ┃ ┣ 📜article.json.lz4 (raw article json data)
+ ┃ ┃ ┃ ┣ 📜cursor.pickle (cursor for graphql queries)
+ ┃ ┃ ┃ ┣ 📜embedding.pickle (metadata object saved as pickle file)
+ ┃ ┃ ┃ ┗ 📜ner.pickle
+ ┣ 📂db
+ ┃ ┗ 📜sqlite_articles.db
+ ┣ 📂models (model weights for language models)
+ ┃ ┗ 📜lid.176.bin
+ ┣ 📂network 
+ ┃ ┗ 📂cyberconnect (network platform)
+ ┃ ┃ ┗ 📜social_graph.gpickle
+```
+
+### Code
+```
+📦veritas
+ ┣ 📂crawlers (download of news feed and network data)
+ ┃ ┣ 📂graphql_queries
+ ┣ 📂db (code for)
+ ┃ ┣ 📂crud (CRUD for each table)
+ ┃ ┣ 📂db (connection info for DB)
+ ┃ ┗ 📂models (sqlalchemy models for each table in DB)
+ ┣ 📂io (helper functions saving/loading data)
+ ┣ 📂nlp (NLP processing)
+ ┗ 📜config.py (config reading .env file)
+```
+
+###  Examples
+
+
+
+# Tasks
+
+- [ ] Mercury
+- [ ] Venus
+- [ ] Earth (Orbit/Moon)
+- [ ] Mars
+- [ ] Jupiter
+
+
 
 
 - Mention .env file
-- Have all dependencies in poetry.toml and then list NLP dependencies in a requirements.txt
-  Include command of how to install requirements.txt with poetry.
-- 
+
 
