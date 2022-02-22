@@ -1,28 +1,24 @@
 
 # Algorithmic fact checking
 
-For how to install the project and code structure go 
-
-Remember does not need to be perfect just useful and better than current benchmarks (which are nonexistant)
-
-> The monopoly of truth is upstream of the monopoly of violence
+For a description of the ideas behind the project see the project section. For Installation and quickstart go straight to the code section. And if you want to see suggestions on how to contribute go to the tasks section.
 
 - [Algorithmic fact checking](#algorithmic-fact-checking)
 - [Project](#project)
-  - [Approach - unbundling](#approach---unbundling)
-    - [Data](#data)
-      - [**Access to data**](#access-to-data)
-      - [**Structure of data**](#structure-of-data)
-      - [**Starting point**](#starting-point)
-    - [NLP](#nlp)
-      - [**NER**](#ner)
-      - [**Quote extraction**](#quote-extraction)
-      - [**Document similarity**](#document-similarity)
-      - [**Language similarity**](#language-similarity)
-      - [**Information extraction**](#information-extraction)
-      - [**Document topic classification**](#document-topic-classification)
-    - [Social network](#social-network)
-  - [Approach - rebundling](#approach---rebundling)
+  - [Intro](#intro)
+  - [Data](#data)
+    - [Access to data](#access-to-data)
+    - [Structure of data](#structure-of-data)
+    - [Starting point](#starting-point)
+  - [NLP](#nlp)
+    - [NER](#ner)
+    - [Quote extraction](#quote-extraction)
+    - [Document similarity](#document-similarity)
+    - [Language similarity](#language-similarity)
+    - [Information extraction](#information-extraction)
+    - [Document topic classification](#document-topic-classification)
+  - [Social network](#social-network)
+  - [Fact checking by analysing root causes for truth distortion](#fact-checking-by-analysing-root-causes-for-truth-distortion)
     - [Echo chamber](#echo-chamber)
     - [Familiarity](#familiarity)
     - [Quote distortion](#quote-distortion)
@@ -34,8 +30,8 @@ Remember does not need to be perfect just useful and better than current benchma
   - [Structure](#structure)
     - [Data](#data-1)
     - [Code](#code-1)
-    - [Examples](#examples)
 - [Tasks](#tasks)
+- [Roadmap](#roadmap)
 
 ---
 
@@ -51,18 +47,17 @@ In order solve this we would ideally like to have an open source knowledge graph
 
 For an outline of how a "knowledge graph" can be used too seperate facts from narratives see the following [lecture](https://www.youtube.com/watch?v=Cwbbxb987vE).
 
-
-
-## Approach - unbundling
+## Intro
 In order to asses the assertions made in an article the full context of the article must be taken into consideration. This is illustrated in the below picture, where an articles content and author(s) is assesed from multiple angles.
 
 ![plot](./assets/full_context.png)
 
 
-### Data
-The two main obstacles too implementing an algorithmic fact checking framework are:
 
-#### **Access to data**
+## Data
+The two main obstacles too implementing an algorithmic fact checking framework are access to the neccessary data and the structure of text data.
+
+### Access to data
 
 **Problem**: The data for assessing the full context of an article is mostly present in various databases but access to those databases is mostly restricted (Facebook, Linkedin, Twitter etc. give limited or no access to their databases).
 
@@ -70,15 +65,15 @@ The two main obstacles too implementing an algorithmic fact checking framework a
 
 Hence, we can build a fact checking framework around web3 infrastucture and then the framework will grow in precision and applicability as the corresponding web3 infrastructure grows.
 
-#### **Structure of data**
+### Structure of data
 
-**Problem**: Text data lacks the structure of traditional
+**Problem**: Text data lacks the structure of traditional tabular dataset.
 
-**Trend**: As most text becomes digital the text increasingly becomes hypertext. Meaning people use @person to directly refer to a person, #topic to directly refer to a topic or event and various other links to refer to sources etc.. This added layer of structure in text documents makes correctly identifying important entities - such as the person quoted - much easier.
+**Trend**: Natural language processing has recently improved to the extent that most [traditional benchmarks don't make much sense anymore](https://ruder.io/nlp-benchmarking/).
 
-Furtermore natural language processing have improved to the extent that most [traditional benchmarks don't make much sense anymore.](https://ruder.io/nlp-benchmarking/)
+Futhermore, as most text becomes digital the text increasingly becomes hypertext. Meaning people use @person to directly refer to a person, #topic to directly refer to a topic or event and various other links to refer to sources etc.. This added layer of structure in text documents makes correctly identifying important entities - such as the person quoted - much less error prone.
 
-#### **Starting point**
+### Starting point
 
 As a starting point then [mirror.xyz](https://mirror.xyz/) is used as the news feed and [cyberconnect.me](cyberconnect.me) is used for the social network data.
 
@@ -86,27 +81,28 @@ As a starting point then [mirror.xyz](https://mirror.xyz/) is used as the news f
 - **Cyberconnect.me**: Cyberconnect aims to build the social graph infrastructure for web3. Currently they have indexed quite a few public data sources - such as bitclout - and the graph can be queried by [api](https://docs.cyberconnect.me/docs/GraphQL/graphql).
 
 
-### NLP
 
-#### **NER**
+## NLP
+
+### NER
 Named entity recognition is used to extract mentions of people, locations, organisations etc.. Extracting the named entities with high accuracy is starting to become relatively easy. Good NER models are accesible through huggingface.co for most big languages. As a starting point [flairs ner-english model](https://huggingface.co/flair/ner-english) is used.
 
-#### **Quote extraction**
+### Quote extraction
 This task could probably be done fairly well by a deterministic approach using f.ex. https://stanfordnlp.github.io/CoreNLP/quote.html
 
-#### **Document similarity**
+### Document similarity
 Document similarity is used to detect similar articles. Currently their are multiple appraoches for assessing document similarity. As a starting point article text is converted to a vector using [Allen AI's specter model](https://huggingface.co/sentence-transformers/allenai-specter) and similarity search/clustering is then done using [facebooks faiss library](https://faiss.ai/).
 
 Another baseline approach could be using [gensim](https://radimrehurek.com/gensim/)
 
 
-#### **Language similarity**
+### Language similarity
 Language similarity is used to detect people/organisations with similar language. An approach to this would be training a language model to classify, whether an article was written by a specific organisation/person. As an example a model could be trained to predict the likelihood of a text being written by a specific senator (and thereby implicitly predicting language similarity between an arbitrary article and a senator).
 
 Various other ways to do this. See for instance the [paper](https://aclanthology.org/W10-0723.pdf) referenced in the slides
 
 
-#### **Information extraction**
+### Information extraction
 Information extraction refers to the task of extracting the assertions made in an article. In an NLP context this could [mean](https://github.com/explosion/spaCy/issues/3303): 
 
 1) Given a document, extract all the entities. 
@@ -129,20 +125,17 @@ This is an area of active research and there are different ways of going about i
 
 The task is definitely doable but is - in my opinion - the most difficult (and interesting) of the NLP tasks described.
 
-#### **Document topic classification**
+### Document topic classification
 Document topic classifiaction is used to extract the topics touched upon in an article. As a starting point a langauge model could be trained to predict a fixed set of highlevel topics such as science, political, sports etc.. Predicting even very high level labels would still be usefull and then the granularity of topic classification can increase over time.
 
-### Social network
+## Social network
 
 Various social network metrics for the author of the article can be calculated using the cybeconnect.me social graph and the author eth address, which is included in the mirror article metadata.
 Example calucalation are such as average distance between nodes, node similarity etc. 
 
-## Approach - rebundling
+## Fact checking by analysing root causes for truth distortion
 
 Once the article has been unbundled and processed in order to produce different analyses/metrics then these can be recombined in order to address problems commonly occuring in todays news feed. For concreate examples on these problems and more details see the [slides](https://assets.1729.com/algorithmic-fact-checking.pdf).
-
-Below we wil ...
-
 
 ### Echo chamber
 
@@ -212,9 +205,13 @@ cat requirements.txt|xargs poetry add
 
 ## Structure
 
+Currently
+
 ### Data
 
 A zip folder with all the data can be downloaded from the following [link](). Unzipping the folder will give you the folder structure shown below. 
+Make sure to create a .env file in the project root and add the environment variable DATA_DIR= >Insert Path to data folder<.
+
 ```
 📦data
  ┣ 📂articles
@@ -234,11 +231,24 @@ A zip folder with all the data can be downloaded from the following [link](). Un
 ```
 
 ### Code
+
+The codebase is currently pretty simple. In the scripts folder there's currently two scripts. The script update_db_with_new_articles.py updates the sqlite database with articles in the data folder that hasn't been added to the articles table in the sqlite database yet.
+
+The process_new_articles.py script process the articles and extracts metadata that is saved to the article folder. The metadata could be a vector embedding, NER tags, POS tags etc..
+
+```
+📦scripts
+ ┣ 📜process_new_articles.py
+ ┗ 📜update_db_with_new_articles.py
+```
+
+Most of the code in the project is in the folder veritas which is installed as a development package. The folder contains code for querying mirror.xyz and cyberconnect.me. A very simple sqlite db setup and some io helper functions loading/saving data with a consistent schema. And some very simple NLP functions that can act as a simple starting point.
+
 ```
 📦veritas
  ┣ 📂crawlers (download of news feed and network data)
  ┃ ┣ 📂graphql_queries
- ┣ 📂db (code for)
+ ┣ 📂db
  ┃ ┣ 📂crud (CRUD for each table)
  ┃ ┣ 📂db (connection info for DB)
  ┃ ┗ 📂models (sqlalchemy models for each table in DB)
@@ -247,21 +257,17 @@ A zip folder with all the data can be downloaded from the following [link](). Un
  ┗ 📜config.py (config reading .env file)
 ```
 
-###  Examples
-
-
 
 # Tasks
 
-- [ ] Mercury
-- [ ] Venus
-- [ ] Earth (Orbit/Moon)
-- [ ] Mars
-- [ ] Jupiter
+- Start on implementing one of the tasks described in the [NLP section](#nlp) 
+- Update mirror crawler such that it queries asynchronously. See for instance the following [introduction](https://fastapi.tiangolo.com/async/) or maybe checkout [AnyIO](https://anyio.readthedocs.io/en/stable/).
+- Add a new data source. Or add a list with possible new data sources and preferably a short description of each data source.
+- Update readme with comments and suggestions for improvements.
 
+# Roadmap
 
+Going forward [jina.ai](https://github.com/jina-ai)
 
-
-- Mention .env file
-
+unix philosphy "do one thing and do it well"
 
