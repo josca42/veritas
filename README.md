@@ -130,8 +130,8 @@ Document topic classifiaction is used to extract the topics touched upon in an a
 
 ## Social network
 
-Various social network metrics for the author of the article can be calculated using the cybeconnect.me social graph and the author eth address, which is included in the mirror article metadata.
-Example calucalation are such as average distance between nodes, node similarity etc. 
+Various social network metrics for the author(s) of the article can be calculated using the cybeconnect.me social graph and the authors eth address, which is included in the mirror article metadata.
+Example calucalations are such as average distance between nodes, node similarity etc. 
 
 ## Fact checking by analysing root causes for truth distortion
 
