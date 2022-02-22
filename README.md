@@ -40,8 +40,7 @@ This project aims to implement the first steps toward checking wether assertions
 
 The reason it is important to implement scalable fact checking is because the information supply chain is broken. 
 
-> Today every leader looks to their feed for information about what’s happening in the world. But the feed tells you what 
-> is popular not what is true.
+> Today every leader looks to their feed for information about what’s happening in the world. But the feed tells you what is popular not what is true.
 
 In order solve this we would ideally like to have an open source knowledge graph that anyone can query in order to discover what's likely to be true. The first step towards creating such a knowledge graph is to fact check the information feed.
 
