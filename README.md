@@ -132,7 +132,7 @@ Example calucalations are such as average distance between nodes, node similarit
 
 Once the article has been unbundled and processed in order to produce different analyses/metrics then these can be recombined in order to address problems commonly occuring in todays news feed. For concreate examples on these problems and more details see the [slides](https://assets.1729.com/algorithmic-fact-checking.pdf).
 
-Below, the different problems are described.
+Below, the different problems and possible solutions are described.
 
 ### Echo chamber
 
