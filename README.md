@@ -267,6 +267,6 @@ The next two steps are:
 
   1) Start implementing much of the NLP functionality for processing the articles and start experimenting with the social network data to see how useful it is at this stage.
 
-  2) Create something that resembles a shitty blockchain news feed. And maybe experiment with using [jina.ai](https://github.com/jina-ai) to make it searchable and build a better backend.
+  2) Create something that resembles a shitty blockchain news feed. And experiment with using [jina.ai](https://github.com/jina-ai) to make it searchable and create a better backend.
 
 
