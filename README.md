@@ -203,13 +203,11 @@ Some NLP packages have a lot of dependencies and installation of these might req
 cat requirements.txt|xargs poetry add
 ```
 
-## Structure
-
-Currently
+## Structure 
 
 ### Data
 
-A zip folder with all the data can be downloaded from the following [link](). Unzipping the folder will give you the folder structure shown below. 
+A zip folder with data can be downloaded from the following [link](https://www.dropbox.com/s/uhd3wk6xl1qvl5t/data.zip?dl=0) (unzipped it's around 1.6 GB). Unzipping the folder will give you the folder structure shown below. 
 Make sure to create a .env file in the project root and add the environment variable DATA_DIR= >Insert Path to data folder<.
 
 ```
