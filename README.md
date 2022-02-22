@@ -79,8 +79,6 @@ As a starting point then [mirror.xyz](https://mirror.xyz/) is used as the news f
 - **Mirror.xyz**: Mirror stores all the articles on Arweave - with tags - making it easy to query the feed. Furthermore every article contains metadata identifying the author by an ethereum address and the article timestamp etc.
 - **Cyberconnect.me**: Cyberconnect aims to build the social graph infrastructure for web3. Currently they have indexed quite a few public data sources - such as bitclout - and the graph can be queried by [api](https://docs.cyberconnect.me/docs/GraphQL/graphql).
 
-
-
 ## NLP
 
 ### NER
@@ -94,12 +92,10 @@ Document similarity is used to detect similar articles. Currently their are mult
 
 Another baseline approach could be using [gensim](https://radimrehurek.com/gensim/)
 
-
 ### Language similarity
 Language similarity is used to detect people/organisations with similar language. An approach to this would be training a language model to classify, whether an article was written by a specific organisation/person. As an example a model could be trained to predict the likelihood of a text being written by a specific senator (and thereby implicitly predicting language similarity between an arbitrary article and a senator).
 
 Various other ways to do this. See for instance the [paper](https://aclanthology.org/W10-0723.pdf) referenced in the slides
-
 
 ### Information extraction
 Information extraction refers to the task of extracting the assertions made in an article. In an NLP context this could [mean](https://github.com/explosion/spaCy/issues/3303): 
@@ -129,12 +125,14 @@ Document topic classifiaction is used to extract the topics touched upon in an a
 
 ## Social network
 
-Various social network metrics for the author of the article can be calculated using the cybeconnect.me social graph and the author eth address, which is included in the mirror article metadata.
-Example calucalation are such as average distance between nodes, node similarity etc. 
+Various social network metrics for the author(s) of the article can be calculated using the cybeconnect.me social graph and the authors eth address, which is included in the mirror article metadata.
+Example calucalations are such as average distance between nodes, node similarity etc. 
 
 ## Fact checking by analysing root causes for truth distortion
 
 Once the article has been unbundled and processed in order to produce different analyses/metrics then these can be recombined in order to address problems commonly occuring in todays news feed. For concreate examples on these problems and more details see the [slides](https://assets.1729.com/algorithmic-fact-checking.pdf).
+
+Below, the different problems are described.
 
 ### Echo chamber
 
