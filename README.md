@@ -48,11 +48,11 @@ In order solve this we would ideally like to have an open source knowledge graph
 For an outline of how a "knowledge graph" can be used too seperate facts from narratives see the following [lecture](https://www.youtube.com/watch?v=Cwbbxb987vE).
 
 ## Intro
-In order to asses the assertions made in an article the full context of the article must be taken into consideration. This is illustrated in the below picture, where an articles content and author(s) is assesed from multiple angles.
+In order to asses the assertions made in an article, the full context of the article must be taken into consideration. This is illustrated in the below picture, where an articles content and author(s) is assesed from multiple angles.
+
+Assessing the full context, however, requires access to the relevant data and the ability to extract the relevant information from the data.
 
 ![plot](./assets/full_context.png)
-
-
 
 ## Data
 The two main obstacles too implementing an algorithmic fact checking framework are access to the neccessary data and the structure of text data.
@@ -264,10 +264,14 @@ Most of the code in the project is in the folder veritas which is installed as a
 - Update mirror crawler such that it queries asynchronously. See for instance the following [introduction](https://fastapi.tiangolo.com/async/) or maybe checkout [AnyIO](https://anyio.readthedocs.io/en/stable/).
 - Add a new data source. Or add a list with possible new data sources and preferably a short description of each data source.
 - Update readme with comments and suggestions for improvements.
+- Add notebooks with ideas and initial implementations of whatever you think would be useful to the project.
 
 # Roadmap
 
-Going forward [jina.ai](https://github.com/jina-ai)
+The next two steps are:
 
-unix philosphy "do one thing and do it well"
+  1) Start implementing much of the NLP functionality for processing the articles and start experimenting with the social network data to see how useful it is at this stage.
+
+  2) Create something that resembles a shitty blockchain news feed. And maybe experiment with using [jina.ai](https://github.com/jina-ai) to make it searchable and build a better backend.
+
 
