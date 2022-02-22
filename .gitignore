@@ -1,5 +1,7 @@
 /data
 /wallets
+/notebooks/archive
+/archive
 *-checkpoint.ipynb
 .vscode
 .env
