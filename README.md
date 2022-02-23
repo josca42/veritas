@@ -1,7 +1,7 @@
 
 # Algorithmic fact checking
 
-For a description of the ideas behind the project see the project section. For Installation and quickstart go straight to the code section. And if you want to see suggestions on how to contribute go to the tasks section.
+For a description of the ideas behind the project see the project section. For installation and quickstart go straight to the code section. And if you want to see suggestions on how to contribute go to the tasks section.
 
 - [Algorithmic fact checking](#algorithmic-fact-checking)
 - [Project](#project)
@@ -36,7 +36,7 @@ For a description of the ideas behind the project see the project section. For I
 ---
 
 # Project
-This project aims to implement the first steps toward checking wether assertions made in an article are likely to be true. The approach to doing so is outlined in the following [slide show](https://assets.1729.com/algorithmic-fact-checking.pdf) by Balaji Srinivasan.
+This project aims to implement the first steps toward checking whether assertions made in an article are likely to be true. The approach to doing so is outlined in the following [slide show](https://assets.1729.com/algorithmic-fact-checking.pdf) by Balaji Srinivasan.
 
 The reason it is important to implement scalable fact checking is because the information supply chain is broken. 
 
@@ -44,7 +44,7 @@ The reason it is important to implement scalable fact checking is because the in
 
 In order solve this we would ideally like to have an open source knowledge graph that anyone can query in order to discover what's likely to be true. The first step towards creating such a knowledge graph is to fact check the information feed.
 
-For an outline of how a "knowledge graph" can be used too seperate facts from narratives see the following [lecture](https://www.youtube.com/watch?v=Cwbbxb987vE).
+For an outline of how a "knowledge graph" can be used to seperate facts from narratives see the following [lecture](https://www.youtube.com/watch?v=Cwbbxb987vE).
 
 ## Intro
 In order to asses the assertions made in an article, the full context of the article must be taken into consideration. This is illustrated in the below picture, where an articles content and author(s) is assesed from multiple angles.
@@ -88,7 +88,7 @@ Named entity recognition is used to extract mentions of people, locations, organ
 This task could probably be done fairly well by a deterministic approach using f.ex. https://stanfordnlp.github.io/CoreNLP/quote.html
 
 ### Document similarity
-Document similarity is used to detect similar articles. Currently their are multiple appraoches for assessing document similarity. As a starting point article text is converted to a vector using [Allen AI's specter model](https://huggingface.co/sentence-transformers/allenai-specter) and similarity search/clustering is then done using [facebooks faiss library](https://faiss.ai/).
+Document similarity is used to detect similar articles. Currently there are multiple appraoches for assessing document similarity. As a starting point article text is converted to a vector using [Allen AI's specter model](https://huggingface.co/sentence-transformers/allenai-specter) and similarity search/clustering is then done using [facebooks faiss library](https://faiss.ai/).
 
 Another baseline approach could be using [gensim](https://radimrehurek.com/gensim/)
 
@@ -130,7 +130,7 @@ Example calucalations are such as average distance between nodes, node similarit
 
 ## Fact checking by analysing root causes for truth distortion
 
-Once the article has been unbundled and processed in order to produce different analyses/metrics then these can be recombined in order to address problems commonly occuring in todays news feed. For concreate examples on these problems and more details see the [slides](https://assets.1729.com/algorithmic-fact-checking.pdf).
+Once the article has been unbundled and processed in order to produce different analyses/metrics then these can be recombined in order to address problems commonly occuring in todays news feed. For concrete examples on these problems and more details see the [slides](https://assets.1729.com/algorithmic-fact-checking.pdf).
 
 Below, the different problems and possible solutions are described.
 
@@ -176,7 +176,7 @@ In the example of an american journalist writing about the chinese people this w
 
 **Implementation**: Label various known partisan public figures/entities with a point estimate on an ideological axis. Use a [language similarity](#language-similarity) detection framework to detect similarity in language between an article and the labeled partisans. If the article has clear language similarity with a set of partisans their point estimate on the ideological axis is an approximation of the unconscious bias in the article.
 
-### Omission of contect
+### Omission of context
 
 **Problem**: Journalists have editorial pressure for a narrative, which can lead to selective omission of context.
 
